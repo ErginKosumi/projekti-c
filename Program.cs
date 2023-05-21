@@ -1,44 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Miniprojekti
+class Employee
 {
-    internal class Program
+    public int Id { get; set; }
+    public string Emri { get; set; }
+    public string Pozita { get; set; }
+    public decimal Rroga { get; set; }
+
+    public virtual decimal CalculateBonus()
     {
-        public class ArrayMin
-        {
-            public static void Main()
-            {
-                Console.WriteLine("Vendosni madhesine e array:");
-                int size = int.Parse(Console.ReadLine());
+        return 50000; // bonus fiks
+    }
+}
 
-                int[] array = new int[size];
+class Zhvillues : Employee
+{
+    public override decimal CalculateBonus()
+    {
+        decimal bonusi = Math.Max(50000, Rroga * 0.2m); // llogarit bonusin më të madh mes fiksit dhe 20% të rrogës
+        return bonusi;
+    }
+}
 
-                Console.WriteLine("Vendosni elementet e array:");
-                for (int i = 0; i < size; i++)
-                {
-                    array[i] = int.Parse(Console.ReadLine());
-                }
+class Menaxher : Employee
+{
+    public override decimal CalculateBonus()
+    {
+        decimal bonusi = Math.Max(50000, Rroga * 0.25m); // llogarit bonusin më të madh mes fiksit dhe 25% të rrogës
+        return bonusi;
+    }
+}
 
-                int minValue = Min(array);
-                Console.WriteLine("Vlera minimale e array eshte: {0}", minValue);
-            }
+class Admin : Employee
+{
+    public override decimal CalculateBonus()
+    {
+        return 50000; // bonus fiks
+    }
+}
 
-            public static int Min(int[] array)
-            {
-                int minValue = array[0];
-                for (int i = 1; i < array.Length; i++)
-                {
-                    if (array[i] < minValue)
-                    {
-                        minValue = array[i];
-                    }
-                }
-                return minValue;
-            }
-        }
+class Program
+{
+    static void Main(string[] args)
+    {
+        // krijojme nje developer, nje menaxher dhe nje admin
+        Employee dev = new Zhvillues { Id = 1, Emri = "John", Pozita = "Zhvillues", Rroga = 60000 };
+        Employee man = new Menaxher { Id = 2, Emri = "Jane", Pozita = "Menaxher", Rroga = 80000 };
+        Employee adm = new Admin { Id = 3, Emri = "Alice", Pozita = "Admin", Rroga = 40000 };
+
+        // shfaqim atributet dhe bonusin e secilit punonjes
+        Console.WriteLine("Zhvilluesi:");
+        Console.WriteLine($"Id: {dev.Id}, Emri: {dev.Emri}, Pozita: {dev.Pozita}, Rroga: {dev.Rroga}, Bonus: {dev.CalculateBonus()}");
+
+        Console.WriteLine("\nMenaxher:");
+        Console.WriteLine($"Id: {man.Id}, Emri: {man.Emri}, Pozita: {man.Pozita}, Rroga: {man.Rroga}, Bonus: {man.CalculateBonus()}");
+
+        Console.WriteLine("\nAdmin:");
+        Console.WriteLine($"Id: {adm.Id}, Emri: {adm.Emri}, Pozita: {adm.Pozita}, Rroga: {adm.Rroga}, Bonus: {adm.CalculateBonus()}");
+
+        Console.ReadKey();
     }
 }
